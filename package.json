@@ -1,0 +1,40 @@
+{
+  "name": "gcp-file-upload",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prepare": "npm run build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf dist && tsc ",
+    "prepublish": "npm run build",
+    "build:test": "npm build && npm pack"
+  },
+  "author": "",
+  "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run pre-commit"
+    }
+  },
+  "files": [
+    "dist/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://180.149.243.11/common-packages/gcp-file-upload"
+  },
+  "dependencies": {
+    "@google-cloud/storage": "^5.7.2",
+    "@nestjs/common": "^7.6.5",
+    "@types/node": "^14.14.22",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^6.6.3"
+  },
+  "devDependencies": {
+    "@types/node": "^12.6.2",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.1.3"
+  }
+}
