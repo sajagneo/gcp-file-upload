@@ -1,7 +1,7 @@
-import { Storage } from "@google-cloud/storage";
+import { GetFilesOptions, Storage } from "@google-cloud/storage";
 import { Injectable } from "@nestjs/common";
 import { GoogleCredetailsOptions } from "./google-storage-service-options";
-import { Constant } from '../constant/constant';
+import { Constant } from "../constant/constant";
 @Injectable()
 export class GoogleStorageService {
   storage;
@@ -51,5 +51,20 @@ export class GoogleStorageService {
   deleteFile = async (bucketName: string, filePath: string) => {
     // Deletes the file from the bucket
     return await this.storage.bucket(bucketName).file(filePath).delete();
+  };
+  getFiles = async (
+    bucketName: string,
+    options?: GetFilesOptions
+  ): Promise<string[]> => {
+    const bucket = this.storage.bucket(bucketName);
+    // Lists files in the bucket, filtered by a prefix
+    let [files] = await bucket.getFiles(options);
+
+    /**
+     * Return File Name
+     */
+    return [...files].map((file) => {
+      return file.name;
+    });
   };
 }
