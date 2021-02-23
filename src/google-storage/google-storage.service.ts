@@ -54,6 +54,8 @@ export class GoogleStorageService {
   };
   getFiles = async (
     bucketName: string,
+    requireSignedUrl: boolean = true,
+    signedUrlExpiryHours: number = Constant.DEFAULT_EXPIRY_FOR_SIGNED_URL,
     options?: GetFilesOptions
   ): Promise<string[]> => {
     const bucket = this.storage.bucket(bucketName);
@@ -63,8 +65,22 @@ export class GoogleStorageService {
     /**
      * Return File Name
      */
-    return [...files].map((file) => {
-      return file.name;
-    });
+    if (requireSignedUrl) {
+      return await Promise.all(
+        [...files].map(
+          async (file): Promise<string> => {
+            return await this.getSignedUrlForFile(
+              bucketName,
+              file.name,
+              signedUrlExpiryHours
+            );
+          }
+        )
+      );
+    } else {
+      return [...files].map((file) => {
+        return file.name;
+      });
+    }
   };
 }
